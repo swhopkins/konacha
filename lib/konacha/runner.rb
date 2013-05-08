@@ -52,7 +52,11 @@ module Konacha
     end
 
     def spec_runners
-      @spec_runners ||= Konacha::Spec.all.map { |spec| SpecRunner.new(self, spec) }
+    # This forces all the specs to be run in one go, rather than hitting a separate URL for each spec file
+    @spec_runners ||= [SpecRunner.new(self, Konacha::Spec.new(''))]
+
+    # To run each spec separately, for better test isolation (but slower tests), use this line
+    #@spec_runners ||= Konacha::Spec.all.map { |spec| SpecRunner.new(self, spec) }
     end
   end
 
