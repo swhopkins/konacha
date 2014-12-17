@@ -134,7 +134,13 @@ module Konacha
         msg = []
         msg << "  Failed: #{@row['name']}"
         msg << "    #{@row['message']}"
-        msg << "    in #{@row['trace']['fileName']}:#{@row['trace']['lineNumber']}" if @row['trace']
+        if @row['trace']
+          if @row['trace']['fileName'] && @row['trace']['lineNumber']
+            msg << "    in #{@row['trace']['fileName']}:#{@row['trace']['lineNumber']}" 
+          else
+            msg << "    in #{@row['trace']}"   
+          end          
+        end
         msg.join("\n").red
       elsif pending?
         "  Pending: #{@row['name']}".yellow
