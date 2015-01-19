@@ -108,7 +108,9 @@ module Konacha
     rescue => e
       msg = [e.inspect]
       msg << e.message unless e.message.blank?
-      raise Konacha::Error, "Error communicating with browser process:\n#{msg.join("\n")}"
+      failed_result = JSON.parse(session.evaluate_script('Konacha.getResults()')).last
+
+      raise Konacha::Error, "Error communicating with browser process during test \"#{failed_result['fullTitle']}\"\n\n\n#{msg.join("\n")}"
     end
   end
 
